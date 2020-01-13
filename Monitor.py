@@ -1,4 +1,6 @@
 import math
+
+import Rect
 import Functions
 
 
@@ -6,6 +8,7 @@ class Monitor:
 
     def __init__(self, **kwargs):
 
+        self.name = kwargs.get("name", "Display")
         self.width_ratio = kwargs.get("width_ratio")
         self.height_ratio = kwargs.get("height_ratio")
 
@@ -15,6 +18,8 @@ class Monitor:
         self.resolution_width = kwargs.get("resolution_width")
 
         self.dpi = self.get_dpi()
+
+        self.rect = self.get_rect(kwargs.get("gui_scalar"))     # Monitor class should probably be a child of Rect
 
     def get_width_height_diagonal(self, kwargs):
 
@@ -42,6 +47,14 @@ class Monitor:
             return self.resolution_height / self.height
         return None
 
+    def get_rect(self, scalar=None):
+        if scalar is None:
+            scalar = 1
+        return Rect.Rect(width=self.width * scalar,
+                         height=self.height * scalar,
+                         x=0, y=0)
+
+    # Displaying data -----------------------------------------------
     def get_properties_dict(self):
         return {"width": self.width,
                 "height": self.height,
